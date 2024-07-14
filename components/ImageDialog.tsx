@@ -54,7 +54,7 @@ const ImageDialog: React.FC<ImageDialogProps> = ({ imageData, content }) => {
 
   return (
     <>
-        <strong>Images:</strong>
+        {imageData?.length>0&&<strong>Images:</strong>}
         
       <div className="p-4 grid grid-cols-3 gap-4">
         {imageData.map((image) => (

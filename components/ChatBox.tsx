@@ -130,7 +130,10 @@ export function ChatBox({ chatId }: { chatId?: string }) {
           },
           body: JSON.stringify({
             question: input,
-            chat_history: messages.map((msg) => msg.content),
+            chat_history: messages.map((msg) => `${msg.role}:${msg.content}`),
+            // chat_history: messages
+            // .filter(msg => msg.role === "assistant")
+            // .map(msg => msg.content),
           }),
         });
 
