@@ -4,8 +4,8 @@ import { ChatBox } from '@/components/ChatBox';
 import { useState } from 'react';
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { motion } from "framer-motion";
-import LeftSidebar from "@/components/LeftSidebar";
-import Chat from "@/components/Chat";
+// import LeftSidebar from "@/components/LeftSidebar";
+// import Chat from "@/components/Chat";
 import RightSidebar from "@/components/RightSidebar";
 import { GroupedChats } from '@/app/types/chat';
 export default function ChatPage( ) {
@@ -13,9 +13,9 @@ export default function ChatPage( ) {
   const [middleWidth, setMiddleWidth] = useState(60);
   const [rightWidth, setRightWidth] = useState(20);
   // const { setIsLoading } = useLoading();
-  // const { username } = useUser();
-  const [currentChatId, setCurrentChatId] = useState<string | null>(null);
-  const [groupedChats, setGroupedChats] = useState<GroupedChats>({});
+  // // const { username } = useUser();
+  // const [currentChatId, setCurrentChatId] = useState<string | null>(null);
+  // const [groupedChats, setGroupedChats] = useState<GroupedChats>({});
   const [error, setError] = useState<string | null>(null);
 
   
