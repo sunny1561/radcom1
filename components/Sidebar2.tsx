@@ -1,12 +1,12 @@
 import React from 'react'
 
-const Sidebar2 = () => {
+export function Sidebar()  {
   return (
     <div>Sidebar2</div>
   )
 }
 
-export default Sidebar2
+// export default Sidebar
 
 // "use client";
 // import { useState, useEffect } from "react";
