@@ -209,9 +209,9 @@ export function Sidebar() {
     return String(date); // Fallback to string representation
   }
 
-  if (!session) {
-    return null;
-  }
+  // if (!session) {
+  //   return null;
+  // }
   return (
     <div className="w-full h-screen bg-gradient-to-b from-gray-900 to-black flex flex-col">
       <div className="p-4">
