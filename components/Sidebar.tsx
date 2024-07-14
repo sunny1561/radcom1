@@ -1,7 +1,7 @@
 //components/Sidebar.tsx
 
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useInView } from "react-intersection-observer";
 import { format } from "date-fns";
@@ -47,7 +47,7 @@ export function Sidebar() {
   const [isVisible, setIsVisible] = useState(false);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
-  const loadMoreChats = async () => {
+  const loadMoreChats = useCallback(async () => {
     if (loadingMore || !hasMore) return;
     setLoadingMore(true);
     const newChats = await fetchChats(chats.length);
@@ -61,7 +61,7 @@ export function Sidebar() {
     setHasMore(parsedChats.length === 20);
     setLoading(false);
     setLoadingMore(false);
-  };
+  }, [chats.length, hasMore, loadingMore]);
 
   const handleLogout = () => {
     signOut();
@@ -69,13 +69,13 @@ export function Sidebar() {
   };
   useEffect(() => {
     loadMoreChats();
-  }, []);
+  }, [loadMoreChats]);
 
   useEffect(() => {
     if (inView && hasMore && !loadingMore) {
       loadMoreChats();
     }
-  }, [inView, hasMore, loadingMore]);
+  }, [inView, hasMore, loadingMore, loadMoreChats]);
 
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
