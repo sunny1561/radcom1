@@ -4,7 +4,7 @@ import { ChatBox } from '@/components/ChatBox';
 import { useState } from 'react';
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { motion } from "framer-motion";
-import LeftSidebar from "@/components/LeftSidebar";
+// import LeftSidebar from "@/components/LeftSidebar";
 import Chat from "@/components/Chat";
 import RightSidebar from "@/components/RightSidebar";
 import { GroupedChats } from '@/app/types/chat';
