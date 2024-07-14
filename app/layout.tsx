@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/components/AuthProvider";
-import { Sidebar } from "@/components/Sidebar2";
+// import { Sidebar } from "@/components/Sidebar2";
 import { ChatBox } from "@/components/ChatBox";
 import { UserProvider } from "@/contexts/UserContext";
 import { LoadingProvider } from "@/contexts/LoadingContext";
