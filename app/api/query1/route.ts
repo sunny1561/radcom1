@@ -1,4 +1,4 @@
-// app/api/query/route.ts
+// app/api/query1/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { ChatOpenAI, OpenAIEmbeddings } from "@langchain/openai";
 import { PineconeStore } from "@langchain/pinecone";
@@ -119,12 +119,7 @@ export async function POST(req: NextRequest) {
         // ],
       });
 
-      const contextualizeQSystemPrompt = "You are an AI assistant specializing in 3GPP telecom standards and technologies. "
-    "Given a chat history and the latest user question which might reference context in the chat history, "
-    "formulate a standalone question about 3GPP telecom standards that can be understood "
-    "without the chat history. Focus on technical accuracy and use standard 3GPP terminology where appropriate. "
-    "If the original question is already clear and specific to 3GPP standards, return it as is. "
-    "Do NOT answer the question, only reformulate it if needed to make it more precise and telecom-specific.";
+      const contextualizeQSystemPrompt = "You are an AI assistant specializing in 3GPP telecom standards and technologies. Given a chat history and the latest user question, which might reference context in the chat history, formulate a standalone question about 3GPP telecom standards that can be understood without the chat history. Focus on technical accuracy and use standard 3GPP terminology where appropriate. If the original question is already clear and specific to 3GPP standards, return it as is. Do NOT answer the question; only reformulate it if needed to make it more precise and telecom-specific.";
 
       const contextualizeQPrompt = ChatPromptTemplate.fromMessages([
         ["system", contextualizeQSystemPrompt],
