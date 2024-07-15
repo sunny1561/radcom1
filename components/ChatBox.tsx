@@ -12,6 +12,7 @@ import ImageDialog from "./ImageDialog";
 import { PaperAirplaneIcon } from '@heroicons/react/24/solid';
 
 import Spinner from "./ZoomingDot";
+import DocumentList from "./DocumentList";
 interface ImageData {
   metadata: {
     description: string;
@@ -238,10 +239,13 @@ export function ChatBox({ chatId }: { chatId?: string }) {
                 {formatContent(message.content)}
                 {message.role === "assistant" && isTyping && <Spinner />}
                 {message.role === "assistant" && message.imageData && (
+                  <div>
                   <ImageDialog
                     content={message.content}
                     imageData={message.imageData}
                   />
+                  <DocumentList Documents={message.Documents}/>
+                  </div>
                 )}
               </div>
               <button

@@ -75,20 +75,20 @@ export async function POST(req: NextRequest) {
       const vectorstore = await PineconeStore.fromExistingIndex(model, {
         pineconeIndex: pineconeIndex,
       });
-      const retriever2 = ScoreThresholdRetriever.fromVectorStore(vectorstore, {
-        minSimilarityScore: 0.8,
-        maxK: 3,
-        kIncrement: 2,
-      });
+      // const retriever2 = ScoreThresholdRetriever.fromVectorStore(vectorstore, {
+      //   minSimilarityScore: 0.8,
+      //   maxK: 3,
+      //   kIncrement: 2,
+      // });
     
-      const results = await retriever2.invoke(query);
+      // const results = await retriever2.invoke(query);
 
       // const results = await vectorstore.maxMarginalRelevanceSearch(query, {
       //   k: 3,
       //   fetchK: 20,
       // });
 
-      const metadataArray = results.map((item) => item.metadata.file_name);
+      // const metadataArray = results.map((item) => item.metadata.file_name);
       const retriever = vectorstore.asRetriever();
     //   await sendUpdate("Processing your query...");
 
@@ -105,11 +105,26 @@ export async function POST(req: NextRequest) {
           },
         ],
       });
+      const llm1 = new ChatOpenAI({
+        openAIApiKey: process.env.OPENAI_API_KEY!,
+        temperature: 0.7,
+        modelName: "gpt-3.5-turbo-0125",
+        streaming: true,
+        // callbacks: [
+        //   {
+        //     handleLLMNewToken(token: string) {
+        //       sendUpdate({token});
+        //     },
+        //   },
+        // ],
+      });
 
-      const contextualizeQSystemPrompt = `Given a chat history and the latest user question
-which might reference context in the chat history, formulate a standalone question
-which can be understood without the chat history. Do NOT answer the question,
-just reformulate it if needed and otherwise return it as is.`;
+      const contextualizeQSystemPrompt = "You are an AI assistant specializing in 3GPP telecom standards and technologies. "
+    "Given a chat history and the latest user question which might reference context in the chat history, "
+    "formulate a standalone question about 3GPP telecom standards that can be understood "
+    "without the chat history. Focus on technical accuracy and use standard 3GPP terminology where appropriate. "
+    "If the original question is already clear and specific to 3GPP standards, return it as is. "
+    "Do NOT answer the question, only reformulate it if needed to make it more precise and telecom-specific.";
 
       const contextualizeQPrompt = ChatPromptTemplate.fromMessages([
         ["system", contextualizeQSystemPrompt],
@@ -117,7 +132,7 @@ just reformulate it if needed and otherwise return it as is.`;
         ["human", "{question}"],
       ]);
       const contextualizeQChain = contextualizeQPrompt
-        .pipe(llm)
+        .pipe(llm1)
         .pipe(new StringOutputParser());
 
       const qaSystemPrompt = `You are an AI assistant specialized in answering questions about 3GPP telecom standards and technologies. You provide detailed and accurate information based on the 3GPP telecom dataset. If you are unsure about an answer or if the information is not available in the dataset, you should clearly state that you do not know.
@@ -169,6 +184,11 @@ just reformulate it if needed and otherwise return it as is.`;
         return new Response
       }
       const images = await getDiagramImages(aiMsg.content as string);
+      console.log(images);
+      
+      const metadataArray=await getDocuments(aiMsg.content as string)
+      console.log(metadataArray);
+      
 
       await sendUpdate(
         {
@@ -230,4 +250,32 @@ async function getDiagramImages(result: string) {
 
   const docs = await retriever.invoke(result);
   return docs;
+}
+
+async function getDocuments(result: string) {
+  const pinecone = new Pinecone({
+    apiKey: process.env.PINECONE_API_KEY!,
+  });
+
+  const model = new OpenAIEmbeddings({
+    openAIApiKey: process.env.OPENAI_API_KEY!,
+    modelName: "text-embedding-ada-002",
+  });
+
+  const index_name = "langchain-rag-multiple-docs";
+  const pineconeIndex = pinecone.Index(index_name);
+
+  const vectorstore = await PineconeStore.fromExistingIndex(model, {
+    pineconeIndex: pineconeIndex,
+  });
+
+  const retriever = ScoreThresholdRetriever.fromVectorStore(vectorstore, {
+    minSimilarityScore: 0.8,
+    maxK: 3,
+    kIncrement: 2,
+  });
+
+  const results = await retriever.invoke(result);
+  const metadataArray = results.map((item) => item.metadata.file_name);
+  return metadataArray;
 }
