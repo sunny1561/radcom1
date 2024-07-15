@@ -91,14 +91,14 @@ const ImageDialog: React.FC<ImageDialogProps> = ({ imageData, content }) => {
               <div className="p-6 overflow-y-auto max-h-[70%]">
                 <DialogHeader className='overflow-auto max-h-[80%]'>
                   <DialogTitle>{selectedImage?.metadata.title}</DialogTitle>
-                  <DialogDescription>{formatContent(content)}</DialogDescription>
+                  <DialogDescription>{selectedImage?.metadata.description }</DialogDescription>
                 </DialogHeader>
               </div>
             </div>
           </div>
         </DialogContent>
       </Dialog>
-    </>
+    </>   
   );
 };
 
