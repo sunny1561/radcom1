@@ -38,9 +38,9 @@
 // export default dbConnect;
 
 import mongoose from "mongoose";
+const MONGODB_URI="mongodb+srv://sunnykumar:n0YaamSsjjJTmrJx@cluster0.hyi57.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
-const MONGODB_URI = process.env.MONGODB_URI!;
-
+//const MONGODB_URI = process.env.MONGODB_URI!;
 if (!MONGODB_URI) {
   throw new Error("Please define the MONGODB_URI environment variable");
 }
@@ -68,7 +68,7 @@ async function dbConnect() {
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,
-      dbName: "radcom1",
+      dbName: "",
     };
 
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
